@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name = "Pandora"
-GenericName = "Minecraft launcher"
-Comment = "Pandora Minecraft launcher"
+Name=Pandora
+GenericName=Minecraft launcher
+Comment=Pandora Minecraft launcher
 Keywords=minecraft;game;gaming;
 Exec=PandoraLauncher %f
 Icon=PandoraLauncher
