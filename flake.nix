@@ -10,16 +10,17 @@
       pkgs = import nixpkgs {
         system = "x86_64-linux";
       };
+      releaseVersion = "2.5.0";
+      releaseSha256 = "sha256-zXu38QCCvdBbQyyDNRTAt/bk83TPoPQURsflOn2MPPs=";
     in
     {
       packages."x86_64-linux".default = pkgs.stdenv.mkDerivation {
         pname = "PandoraLauncher";
-        version = "2.4.1";
+        version = releaseVersion;
 
         src = pkgs.fetchurl {
-          url = "https://github.com/Moulberry/PandoraLauncher/releases/download/v2.4.1/PandoraLauncher-Linux-2.4.1-x86_64";
-          sha256 = "sha256-3yYpgVQLpWCTtNqKi+0ecsibPZSMcKtcbTbTDbIP83s=";
-          postFetch = "chmod +x $out";
+          url = "https://github.com/Moulberry/PandoraLauncher/releases/download/v${releaseVersion}/PandoraLauncher-Linux-${releaseVersion}-x86_64";
+          sha256 = releaseSha256;
         };
         dontUnpack = true;
 
@@ -42,6 +43,7 @@
 
           makeWrapper $out/libexec/PandoraLauncher $out/bin/PandoraLauncher \
             --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath (with pkgs; [
+              # PandoraLauncher libs
               wayland
               vulkan-loader
 
@@ -56,6 +58,9 @@
               xdg-utils
               xdg-desktop-portal
 
+              # Java runtimes
+              # NOTE: PandoraLauncher doesn't have a way to automatically have java runtimes detected yet. So you'll just have to manually select the /nix/store runtimes.
+              # NOTE: PrismLauncher has a command-line argument for java runtimes to override the autodetect, & hopefully PandoraLauncher does the same.
               jdk17
               jdk21
               zulu17
@@ -63,6 +68,33 @@
               graalvmPackages.graalvm-ce
               semeru-bin-17
               semeru-bin # 21
+
+              # Minecraft libs
+
+              # OpenGL
+              glfw3-minecraft
+              libGL
+              libx11
+              libxcursor
+              libxext
+              libxrandr
+              libxxf86vm
+              
+              # vulkan-loader # For VulkanMod. Already included because PandoraLauncher uses vulkan.
+
+              # OpenAL
+              openal
+              alsa-lib
+              libjack2
+              libpulseaudio
+              pipewire
+
+              openssl
+
+              udev
+
+              gamemode.lib # Gamemode support
+              libusb1 # Controller support
             ])}
 
             mkdir -p $out/share/applications
@@ -72,7 +104,7 @@
         '';
 
         meta = {
-          name = "PandoraLauncher-2.4.1";
+          name = "PandoraLauncher-${releaseVersion}";
           description = "Pandora is a modern Minecraft launcher that balances ease-of-use with powerful instance management features";
           homepage = "https://pandora.moulberry.com/";
           license = pkgs.lib.licenses.mit;
