@@ -56,6 +56,11 @@
               semeru-bin-17
               semeru-bin # 21
             ])}
+
+            mkdir -p $out/share/applications
+            cp ${./PandoraLauncher.desktop} $out/share/applications/PandoraLauncher.desktop
+            mkdir -p $out/share/icons/hicolor/scalable/apps
+            cp ${./PandoraLauncher.svg} $out/share/icons/hicolor/scalable/apps/PandoraLauncher.svg
         '';
 
         meta = {
