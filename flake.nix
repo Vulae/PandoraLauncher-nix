@@ -45,8 +45,16 @@
               wayland
               vulkan-loader
 
+              # FIXME: Any of these should allow use to open URLs, but they don't.
+              # https://github.com/zed-industries/zed/blob/d7bce5468521791c40b2f4641c23c3ce878bfd70/crates/gpui/src/platform/linux/wayland/client.rs#L789
+              # There's a demo of `ashpd` & using the "Open URI" demo literally just doesn't work.
+              # Even with the below packages it just doesn't work.
+              # xgd-open does work for me (Which the `open` crate uses, but in the linked code it literally just doesn't get to execute it.)
+              # NOTE: I have resorted to just building PandoraLauncher & just insert a println! with the login URL:
+              # PandoraLauncher/crates/backend/src/backend.rs#L410
               dbus
               xdg-utils
+              xdg-desktop-portal
 
               jdk17
               jdk21
